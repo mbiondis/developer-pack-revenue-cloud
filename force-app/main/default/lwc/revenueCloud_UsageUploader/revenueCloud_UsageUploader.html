@@ -1,0 +1,116 @@
+<template>
+  <lightning-card
+    title={cardTitle}
+    icon-name="standard:customer_portal_users"
+  >
+    <lightning-button
+      label="Save Usages"
+      slot="actions"
+      variant="brand"
+      icon-name="utility:save"
+      disabled={noFile}
+      onclick={handleUpload}
+    ></lightning-button>
+
+    <div class="slds-p-horizontal_small">
+      <!-- Single file -->
+      <div class="slds-p-around_medium">
+        <template if:true={noFile}>
+          <lightning-input
+            type="file"
+            label="Usage CSV file"
+            accept=".csv"
+            onchange={handleFilesChange}
+          ></lightning-input>
+        </template>
+        <template if:true={uploadedFile}>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="fileInputName"
+              >Usage CSV file</label
+            >
+            <div
+              class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+            >
+              <span>{uploadedFile.name}</span>
+              <lightning-button-icon
+                class="slds-p-left_x-small"
+                icon-class="slds-icon-text-light"
+                icon-name="utility:clear"
+                onclick={clearUsageFile}
+                variant="bare"
+                alternative-text="Clear"
+              ></lightning-button-icon>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+    <template if:true={usages}>
+        <div class="slds-card__body slds-card__body_inner">
+            <article class="slds-card slds-card_boundary">
+      <table
+        class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped"
+      >
+        <thead>
+          <tr class="slds-text-title_caps">
+            <th scope="col">
+              <div class="slds-truncate" title="Matching ID">Matching ID</div>
+            </th>
+            <th scope="col">
+              <div class="slds-truncate" title="Unit of Measure">Unit of Measure</div>
+            </th>
+            <th scope="col">
+              <div class="slds-truncate" title="Matching Attribute">Matching Attribute</div>
+            </th>
+            <th scope="col">
+              <div class="slds-truncate " title="Quantity">Quantity</div>
+            </th>
+            <th scope="col">
+              <div class="slds-truncate" title="Start Date">Start Date</div>
+            </th>
+            <th scope="col">
+              <div class="slds-truncate" title="End Date">End Date</div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <template for:each={usages} for:item="usage">
+            <tr key={usage.blng__MatchingId__c}>
+              <td data-label="Matching ID">
+                <div class="slds-truncate">{usage.blng__MatchingId__c}</div>
+              </td>
+              <td data-label="Unit of Measure">
+                <div class="slds-truncate">{usage.blng__UnitOfMeasure__c}</div>
+              </td>
+              <td data-label="Matching Attribute">
+                <div class="slds-truncate">{usage.blng__MatchingAttribute__c}</div>
+              </td>
+              <td data-label="Quantity">
+                <div class="slds-truncate">{usage.blng__Quantity__c}</div>
+              </td>
+              <td data-label="Start Date">
+                <div class="slds-truncate">
+                  <lightning-formatted-date-time
+                    value={usage.blng__StartDateTime__c}
+                  ></lightning-formatted-date-time>
+                </div>
+              </td>
+              <td data-label="End Date">
+                <div class="slds-truncate">
+                  <lightning-formatted-date-time
+                    value={usage.blng__EndDateTime__c}
+                  ></lightning-formatted-date-time>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      </article>
+        </div>
+
+      <!-- End Usage list -->
+    </template>
+  </lightning-card>
+</template>
